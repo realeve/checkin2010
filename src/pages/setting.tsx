@@ -6,7 +6,6 @@ import FormComponent from '@/components/FormComponent';
 import * as db from '@/utils/db';
 import * as userLib from '@/utils/user';
 import * as lib from '@/utils/lib';
-import * as R from 'ramda';
 
 const paper = [
   {
@@ -47,6 +46,7 @@ function SettingPage() {
       // 不重复提交
       return;
     }
+    setLoading(true);
     // 数据是否完整
 
     let status = state.findIndex(item => item.trim().length === 0);
@@ -64,17 +64,19 @@ function SettingPage() {
     state.forEach((item, idx) => {
       param[paper[idx].key] = item;
     });
+    // 🥜
 
     console.log(param);
-
-    return;
-    // db.setCbpcyouth2019Votelist(param)
-    //   .then(res => {
-    //     userLib.gotoSuccess();
-    //   })
-    //   .catch(e => {
-    //     Toast.fail('提交失败');
-    //   });
+    db.addTblMeetingSetting(param)
+      .then(() => {
+        userLib.gotoSuccess();
+      })
+      .catch(() => {
+        Toast.fail('提交失败');
+      })
+      .final(() => {
+        setLoading(false);
+      });
   };
 
   return (
