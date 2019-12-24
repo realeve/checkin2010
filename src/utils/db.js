@@ -12,3 +12,14 @@ export const addMeetSetting = params => axios({
     url: '/222/4e6b7c2fd3.json',
     params,
 });
+
+/**
+ *   @database: { 微信开发 }
+ *   @desc:     { 会议列表 } 
+ */
+export const getMeetSetting = (_id = 999999) => axios({
+    url: '/223/df7a4fcc90.json',
+    params: {
+        _id
+    },
+});

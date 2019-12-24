@@ -15,7 +15,7 @@ function ResultPage({ result }) {
             router.push('/list');
           }}
         >
-          查看实时得分
+          查看会议列表
         </Button>
       </WingBlank>
     </div>
