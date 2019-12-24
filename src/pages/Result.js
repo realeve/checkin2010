@@ -12,7 +12,7 @@ function ResultPage({ result }) {
         <Button
           type="primary"
           onClick={() => {
-            router.push('/chart');
+            router.push('/list');
           }}
         >
           查看实时得分

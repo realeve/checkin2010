@@ -11,7 +11,7 @@ const paper = [
   {
     type: 'input',
     title: '会议名称',
-    key: 'metting_name',
+    key: 'meeting_name',
   },
   {
     type: 'input',
@@ -67,14 +67,14 @@ function SettingPage() {
     // 🥜
 
     console.log(param);
-    db.addTblMeetingSetting(param)
+    db.addMeetSetting(param)
       .then(() => {
         userLib.gotoSuccess();
       })
       .catch(() => {
         Toast.fail('提交失败');
       })
-      .final(() => {
+      .finally(() => {
         setLoading(false);
       });
   };
