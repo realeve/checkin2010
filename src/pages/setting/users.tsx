@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Button, ListView } from 'antd-mobile';
+import { ListView } from 'antd-mobile';
 import * as db from '@/utils/db';
 import { useSetState } from 'react-use';
 import * as R from 'ramda';
-import router from 'umi/router';
 
-export default function ListPage() {
+export default function UserList({ meeting_id: meet_id }) {
   const [state, setState] = useSetState({
     dataSource: new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2,
@@ -20,7 +19,7 @@ export default function ListPage() {
 
   const refresh = async () => {
     setState({ isLoading: true });
-    let { data: rData } = await db.getMeetSetting(maxId);
+    let { data: rData } = await db.getMeetCheckinDetail({ _id: maxId, meet_id });
 
     let hasMore = true;
     if (rData.length < 5) {
@@ -72,6 +71,15 @@ export default function ListPage() {
       index = state.rData.length - 1;
     }
     const obj = state.rData[index--];
+    const rowStyle = {
+      display: 'flex',
+      flexDirection: 'row',
+      width: '100%',
+      fontSize: '14px',
+      marginBottom: '8px',
+      flex: 1,
+      justifyContent: 'space-between',
+    };
     return (
       <div key={obj.id} style={{ padding: '0 15px' }}>
         <div
@@ -82,32 +90,23 @@ export default function ListPage() {
             borderBottom: '1px solid #F6F6F6',
           }}
         >
-          {parseInt(rowID) + 1}.{obj.title}
+          {parseInt(rowID) + 1}.{obj['姓名']}
         </div>
-        <div style={{ display: '-webkit-box', display: 'flex', padding: '15px 0' }}>
-          <div
-            style={{
-              lineHeight: 1,
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              flex: 1,
-            }}
-          >
-            <div>
-              <div style={{ marginBottom: '8px' }}>地点:{obj.place}</div>
-              <div>
-                <span style={{ fontSize: '12px', color: '#b2b2b2' }}>时间:{obj.time}</span>
-              </div>
-            </div>
-            <span
-              onClick={() => {
-                router.push('/setting/' + obj.id);
-              }}
-              style={{ color: '#929292', fontSize: '14px' }}
-            >
-              查看详情
-            </span>
+        <div
+          style={{
+            display: '-webkit-box',
+            display: 'flex',
+            padding: '15px 0',
+            flexDirection: 'column',
+          }}
+        >
+          <div style={rowStyle}>
+            <div>单位: {obj['单位']}</div>
+            <div>手机: {obj['手机']}</div>
+          </div>
+          <div style={rowStyle}>
+            <div>学历: {obj['学历']}</div>
+            <div>签到时间: {obj.签到时间}</div>
           </div>
         </div>
       </div>
@@ -117,7 +116,7 @@ export default function ListPage() {
   return (
     <ListView
       dataSource={state.dataSource}
-      renderHeader={() => <span>会议列表</span>}
+      renderHeader={() => <span>人员名单</span>}
       renderFooter={() => (
         <div style={{ padding: 30, textAlign: 'center' }}>
           {state.isLoading ? '加载中...' : '没有数据了'}

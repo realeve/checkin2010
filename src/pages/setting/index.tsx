@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, WhiteSpace, WingBlank, Toast } from 'antd-mobile';
-import styles from './paper.less';
+import styles from '../paper.less';
 import { connect } from 'dva';
 import FormComponent from '@/components/FormComponent';
 import * as db from '@/utils/db';
@@ -35,7 +35,7 @@ const paper = [
   },
 ];
 
-function SettingPage() {
+function SettingPage({ meeting_id }) {
   const [state, setState] = useState(['', '', lib.now(), '10', '20']);
 
   const [loading, setLoading] = useState(false);
@@ -79,22 +79,39 @@ function SettingPage() {
       });
   };
 
+  // loading
+  useEffect(() => {
+    if (!meeting_id) {
+      return;
+    }
+
+    db.getMeetSettingDetail(meeting_id).then(res => {
+      if (res.rows === 0) {
+        return;
+      }
+      let data = res.data[0];
+      setState(data);
+    });
+  }, []);
+
   return (
     <div>
       <div className={styles.content}>
         <FormComponent data={paper} onChange={setState} state={state} showErr={showErr} />
         <WhiteSpace size="lg" />
       </div>
-      <WingBlank>
-        <Button
-          type="primary"
-          onClick={onSubmmit}
-          loading={loading}
-          disabled={loading || state.findIndex(item => item.trim().length === 0) > -1}
-        >
-          提交
-        </Button>
-      </WingBlank>
+      {!meeting_id && (
+        <WingBlank>
+          <Button
+            type="primary"
+            onClick={onSubmmit}
+            loading={loading}
+            disabled={loading || state.findIndex(item => item.trim().length === 0) > -1}
+          >
+            提交
+          </Button>
+        </WingBlank>
+      )}
     </div>
   );
 }

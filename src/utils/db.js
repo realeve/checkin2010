@@ -23,3 +23,41 @@ export const getMeetSetting = (_id = 999999) => axios({
         _id
     },
 });
+
+
+/**
+ *   @database: { 微信开发 }
+ *   @desc:     { 会议详情 } 
+ */
+export const getMeetSettingDetail = _id => axios({
+    url: '/227/f5677b29d3.array',
+    params: {
+        _id
+    },
+});
+
+
+/**
+ *   @database: { 微信开发 }
+ *   @desc:     { 签到人员查询 } 
+ */
+export const getMeetCheckin = meeting_id => axios({
+    url: '/228/3c3cb43f3e.json',
+    params: {
+        meeting_id
+    },
+});
+
+
+
+/**
+*   @database: { 微信开发 }
+*   @desc:     { 签到人员列表依次查询 } 
+	以下参数在建立过程中与系统保留字段冲突，已自动替换:
+	@id:_id. 参数说明：api 索引序号
+    const { meet_id, _id } = params;
+*/
+export const getMeetCheckinDetail = params => axios({
+    url: '/229/7cf87521e8.json',
+    params,
+});
