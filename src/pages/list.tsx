@@ -94,25 +94,44 @@ function ListPage({ isAdmin }) {
             style={{
               lineHeight: 1,
               display: 'flex',
-              flexDirection: 'row',
+              flexDirection: 'column',
               justifyContent: 'space-between',
               flex: 1,
             }}
           >
-            <div>
+            <div
+              style={{
+                lineHeight: 1,
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                flex: 1,
+              }}
+            >
               <div style={{ marginBottom: '8px' }}>地点:{obj.place}</div>
               <div>
-                <span style={{ fontSize: '12px', color: '#b2b2b2' }}>时间:{obj.time}</span>
+                <span
+                  onClick={() => {
+                    router.push('/setting/' + obj.id);
+                  }}
+                  style={{ color: '#929292', fontSize: '14px' }}
+                >
+                  点击查看详情
+                </span>
               </div>
             </div>
-            <span
-              onClick={() => {
-                router.push('/setting/' + obj.id);
-              }}
-              style={{ color: '#929292', fontSize: '14px' }}
-            >
-              查看详情
-            </span>
+            <div>
+              <span style={{ fontSize: '12px', color: '#b2b2b2' }}>时间:{obj.time}</span>
+            </div>
+            <div style={{ marginBottom: '8px', fontSize: '14px', marginTop: '10px' }}>
+              会议链接:
+              <a
+                href={`${window.location.origin}${window.location.pathname}#/?id=${obj.id}&nonce=${obj.nonce}`}
+                target="_blank"
+              >
+                {`${window.location.origin}${window.location.pathname}#/?id=${obj.id}&nonce=${obj.nonce}`}
+              </a>
+            </div>
           </div>
         </div>
       </div>

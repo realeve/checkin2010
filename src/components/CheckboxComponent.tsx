@@ -1,5 +1,5 @@
 import React from 'react';
-import { IQuestion } from '../pages/Paper';
+import { IQuestion } from '../pages/checkin';
 import { List, Checkbox } from 'antd-mobile';
 import * as lib from '@/utils/lib';
 

@@ -11,17 +11,10 @@ export interface IPropsForm {
   data: any;
   onChange: any;
   state: any;
-  showErr?: any;
   showKey?: boolean;
   [key: string]: any;
 }
-export default function FormComponent({
-  data,
-  onChange,
-  showKey = true,
-  state,
-  showErr,
-}: IPropsForm) {
+export default function FormComponent({ data, onChange, showKey = true, state }: IPropsForm) {
   return data.map(({ title, data, type = 'radio', subTitle, ...props }: IPaper, key: number) => {
     let idxTitle = showKey ? `${key + 1}.${title}` : title;
 
@@ -35,7 +28,6 @@ export default function FormComponent({
       length: props.length,
       sort: props.sort,
       maxLength: props.maxLength,
-      showErr: !R.equals(showErr, {}),
       value: state[key] || '',
     };
 
@@ -53,7 +45,7 @@ export default function FormComponent({
         }
         return null;
       case 'input':
-        let { showErr, onChange, idx, ...rest } = prop;
+        let { onChange, idx, ...rest } = prop;
         return (
           <List renderHeader={prop.title} key={key}>
             <InputItem

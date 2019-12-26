@@ -84,3 +84,36 @@ export const addMeetAdminList = user => axios({
         user
     },
 });
+
+
+/**
+*   @database: { 微信开发 }
+*   @desc:     { 二维码展示信息 } 
+    const { _id, nonce } = params;
+*/
+export const getMeetSettingQR = params => axios({
+    url: '/232/fd11f6e5e1.array',
+    params,
+});
+
+
+/**
+*   @database: { 微信开发 }
+*   @desc:     { 签到 } 
+    const { meet_id, user, org_name, id_card, username, phone, education, rec_time } = params;
+*/
+export const addMeetCheckin = params => axios({
+    url: '/233/1b4866b7cc.json',
+    params,
+});
+
+
+/**
+*   @database: { 微信开发 }
+*   @desc:     { 是否签到 } 
+    const { user, meet_id } = params;
+*/
+export const getMeetCheckin_user = params => axios({
+    url: '/234/6d635abc10.json',
+    params,
+});
