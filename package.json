@@ -18,6 +18,8 @@
     "echarts": "^4.3.0",
     "element-resize-event": "^3.0.3",
     "fastclick": "^1.0.6",
+    "file-saver": "^2.0.2",
+    "jszip": "^3.2.2",
     "keyboardjs": "^2.5.1",
     "prop-types": "^15.7.2",
     "qrcode.react": "^1.0.0",

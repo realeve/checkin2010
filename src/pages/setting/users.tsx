@@ -116,7 +116,7 @@ export default function UserList({ meeting_id: meet_id }) {
   return (
     <ListView
       dataSource={state.dataSource}
-      renderHeader={() => <span>人员名单</span>}
+      renderHeader={() => <span>签到人员名单</span>}
       renderFooter={() => (
         <div style={{ padding: 30, textAlign: 'center' }}>
           {state.isLoading ? '加载中...' : '没有数据了'}

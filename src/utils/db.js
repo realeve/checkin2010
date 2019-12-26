@@ -42,7 +42,7 @@ export const getMeetSettingDetail = _id => axios({
  *   @desc:     { 签到人员查询 } 
  */
 export const getMeetCheckin = meeting_id => axios({
-    url: '/228/3c3cb43f3e.json',
+    url: '/228/3c3cb43f3e.array',
     params: {
         meeting_id
     },

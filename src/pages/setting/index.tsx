@@ -6,7 +6,7 @@ import FormComponent from '@/components/FormComponent';
 import * as db from '@/utils/db';
 import * as userLib from '@/utils/user';
 import * as lib from '@/utils/lib';
-
+import Excel from '@/utils/excel';
 const paper = [
   {
     type: 'input',
@@ -79,6 +79,8 @@ function SettingPage({ meeting_id }) {
       });
   };
 
+  const [downloadData, setDownloadData] = useState(null);
+
   // loading
   useEffect(() => {
     if (!meeting_id) {
@@ -92,7 +94,28 @@ function SettingPage({ meeting_id }) {
       let data = res.data[0];
       setState(data);
     });
+    db.getMeetCheckin(meeting_id).then(res => {
+      res.data = res.data.map(item => {
+        item[1] = "'" + item[1];
+        item[3] = "'" + item[3];
+        return item;
+      });
+      setDownloadData(res);
+    });
   }, []);
+
+  const onDownload = () => {
+    if (!downloadData) {
+      Toast.fail('数据载入失败');
+      return;
+    }
+    let excel = new Excel({
+      filename: state[2] + ' ' + state[0],
+      header: downloadData.header,
+      body: downloadData.data,
+    });
+    excel.save();
+  };
 
   return (
     <div>
@@ -109,6 +132,13 @@ function SettingPage({ meeting_id }) {
             disabled={loading || state.findIndex(item => item.trim().length === 0) > -1}
           >
             提交
+          </Button>
+        </WingBlank>
+      )}
+      {meeting_id && (
+        <WingBlank style={{ marginBottom: 20 }}>
+          <Button type="primary" onClick={onDownload}>
+            下载文件({(downloadData && downloadData.rows) || 0}人签到)
           </Button>
         </WingBlank>
       )}
