@@ -61,3 +61,14 @@ export const getMeetCheckinDetail = params => axios({
     url: '/229/7cf87521e8.json',
     params,
 });
+
+/**
+ *   @database: { 微信开发 }
+ *   @desc:     { 用户身份认证 } 
+ */
+export const getMeetAdminList = user => axios({
+    url: '/230/d780ca311d.json',
+    params: {
+        user
+    },
+});

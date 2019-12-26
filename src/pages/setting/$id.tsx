@@ -1,10 +1,13 @@
 import React from 'react';
 import SettingPage from './index';
 import UserList from './users';
-export default function SettingList({ match }) {
+import ValidPage from './valid';
+import { connect } from 'dva';
+
+function SettingList({ match, isAdmin }) {
   let id = match.params.id || 0;
-  if (!id) {
-    return <div>无效页面</div>;
+  if (!id || !isAdmin) {
+    return <ValidPage />;
   }
 
   return (
@@ -14,3 +17,5 @@ export default function SettingList({ match }) {
     </div>
   );
 }
+
+export default connect(({ common }: any) => ({ isAdmin: common.isAdmin }))(SettingList);

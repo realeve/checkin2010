@@ -7,6 +7,8 @@ import * as db from '@/utils/db';
 import * as userLib from '@/utils/user';
 import * as lib from '@/utils/lib';
 import Excel from '@/utils/excel';
+import ValidPage from './valid';
+
 const paper = [
   {
     type: 'input',
@@ -35,7 +37,11 @@ const paper = [
   },
 ];
 
-function SettingPage({ meeting_id }) {
+function SettingPage({ meeting_id, isAdmin }) {
+  if (!isAdmin) {
+    return <ValidPage />;
+  }
+
   const [state, setState] = useState(['', '', lib.now(), '10', '20']);
 
   const [loading, setLoading] = useState(false);
@@ -123,6 +129,7 @@ function SettingPage({ meeting_id }) {
         <FormComponent data={paper} onChange={setState} state={state} showErr={showErr} />
         <WhiteSpace size="lg" />
       </div>
+
       {!meeting_id && (
         <WingBlank>
           <Button
@@ -146,4 +153,6 @@ function SettingPage({ meeting_id }) {
   );
 }
 
-export default connect(({ common }: any) => common)(SettingPage);
+export default connect(({ common }: any) => ({ user: common.user, isAdmin: common.isAdmin }))(
+  SettingPage,
+);

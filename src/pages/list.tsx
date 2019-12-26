@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Button, ListView } from 'antd-mobile';
+import { ListView } from 'antd-mobile';
 import * as db from '@/utils/db';
 import { useSetState } from 'react-use';
 import * as R from 'ramda';
 import router from 'umi/router';
+import { connect } from 'dva';
+import ValidPage from './setting/valid';
 
-export default function ListPage() {
+function ListPage({ isAdmin }) {
+  if (!isAdmin) {
+    return <ValidPage />;
+  }
   const [state, setState] = useSetState({
     dataSource: new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2,
@@ -137,3 +142,5 @@ export default function ListPage() {
     />
   );
 }
+
+export default connect(({ common }) => ({ isAdmin: common.isAdmin }))(ListPage);
