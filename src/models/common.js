@@ -48,7 +48,7 @@ export default {
             if (isAdmin === -1) {
                 isAdmin = window.localStorage.getItem('_isAdmin') || -1;
             }
-            if (isAdmin > -1) {
+            if (isAdmin > 0) {
                 // 值为0或1时，表示已经载入结果，停止加载
                 yield put({
                     type: 'setStore',

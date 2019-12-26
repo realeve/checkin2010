@@ -132,13 +132,10 @@ function ListPage({ isAdmin }) {
       renderSeparator={separator}
       className="am-list"
       pageSize={4}
-      useBodyScroll
-      // onScroll={() => {
-      //   console.log('scroll');
-      // }}
       scrollRenderAheadDistance={500}
       onEndReached={onEndReached}
       onEndReachedThreshold={10}
+      style={{ height: 'calc( 100vh - 43px )', overflow: 'auto' }}
     />
   );
 }

@@ -72,3 +72,15 @@ export const getMeetAdminList = user => axios({
         user
     },
 });
+
+
+/**
+ *   @database: { 微信开发 }
+ *   @desc:     { 添加管理员 } 
+ */
+export const addMeetAdminList = user => axios({
+    url: '/231/8dec219250.json',
+    params: {
+        user
+    },
+});
