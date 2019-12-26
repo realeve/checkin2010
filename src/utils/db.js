@@ -117,3 +117,15 @@ export const getMeetCheckin_user = params => axios({
     url: '/234/6d635abc10.json',
     params,
 });
+
+
+/**
+ *   @database: { 微信开发 }
+ *   @desc:     { 签到总人数 } 
+ */
+export const getMeetCheckinNum = meet_id => axios({
+    url: '/235/f7fed22bc8.json',
+    params: {
+        meet_id
+    },
+}).then(res => res.data[0].checkin_num);

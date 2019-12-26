@@ -41,9 +41,9 @@ export default function NewPage() {
     console.log('Url', url);
     setQrcode(url);
 
-    // db.getCbpcyouth2019Checkin().then(res => {
-    //   setNum(res);
-    // });
+    db.getMeetCheckinNum(cfg.id).then(res => {
+      setNum(res);
+    });
   };
 
   const [isValid, setIsValid] = useState(false);
