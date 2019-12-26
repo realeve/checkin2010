@@ -8,16 +8,18 @@ function ResultPage({ result }) {
     <div>
       <Result {...result} />
       <WhiteSpace />
-      <WingBlank>
-        <Button
-          type="primary"
-          onClick={() => {
-            router.push('/list');
-          }}
-        >
-          查看会议列表
-        </Button>
-      </WingBlank>
+      {!window.location.href.includes('showBtn=0') && (
+        <WingBlank>
+          <Button
+            type="primary"
+            onClick={() => {
+              router.push('/list');
+            }}
+          >
+            查看会议列表
+          </Button>
+        </WingBlank>
+      )}
     </div>
   );
 }

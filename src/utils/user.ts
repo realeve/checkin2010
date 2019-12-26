@@ -57,4 +57,4 @@ export const getPaperData = () => {
   return JSON.parse(res);
 };
 
-export let gotoSuccess = () => router.push('/result');
+export let gotoSuccess = (showBtn = 1) => router.push('/result?showBtn=' + showBtn);

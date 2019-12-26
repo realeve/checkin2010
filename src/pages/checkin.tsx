@@ -140,7 +140,7 @@ function NewPage({ user }: any) {
       meet_id: meet_id || cfg.id,
     })
       .then(res => {
-        userLib.gotoSuccess();
+        userLib.gotoSuccess(0);
       })
       .catch(e => {
         Toast.fail('提交失败,请勿重复投票');
