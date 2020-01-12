@@ -57,6 +57,7 @@ function SettingPage({ meeting_id, isAdmin }) {
   const [loading, setLoading] = useState(false);
   const [showErr, setShowErr] = useState({ msg: '' });
 
+  // 数据提交完成
   const onSubmmit = async () => {
     if (loading) {
       // 不重复提交
@@ -111,6 +112,7 @@ function SettingPage({ meeting_id, isAdmin }) {
       return;
     }
 
+    // 初始设置载入
     db.getMeetSettingDetail(meeting_id).then(res => {
       if (res.rows === 0) {
         return;
@@ -120,10 +122,11 @@ function SettingPage({ meeting_id, isAdmin }) {
         .trim()
         .split(',')
         .map(key => filedsCfg.findIndex(item => item.key === key) + '');
-      console.log(data);
+      // console.log(data);
       setState(data);
     });
 
+    // 下载数据相关
     db.getMeetCheckin(meeting_id).then(res => {
       res.data = res.data.map(item => {
         item[1] = "'" + item[1];

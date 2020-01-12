@@ -40,7 +40,7 @@ export const filedsCfg = [
   { title: '职称', key: 'rank', type: 'input' },
   { title: '职务', key: 'level', type: 'input' },
   { title: '教学科目', key: 'class_list', type: 'input' },
-  { title: ' 工作年限', key: 'work_years', type: 'input', reg: /^\d{1,2}$/ },
+  { title: '工作年限', key: 'work_years', type: 'input', reg: /^\d{1,2}$/ },
   {
     title: '身份证号码',
     key: 'id_card',
@@ -207,7 +207,7 @@ function NewPage({ user }: any) {
     }
     db.getMeetUsers({
       user: user.user,
-      meet_id: meetId,
+      meet_id: meeting[meetId].id,
     }).then(res => {
       if (res.rows === 0) {
         return;
@@ -240,7 +240,7 @@ function NewPage({ user }: any) {
       params,
       keys,
       {
-        meet_id: meetId,
+        meet_id: meeting[meetId].id,
         user: user.user,
         rec_time: lib.now(),
       },
