@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IQuestion } from '../pages/checkin';
+import { IQuestion } from '../pages';
 import { List, Card } from 'antd-mobile';
 import * as R from 'ramda';
 import RadioComponent from './RadioComponent';

@@ -142,3 +142,25 @@ export const getMeetBaseSetting = params =>
     url: '/236/18990fcc32.json',
     params,
   });
+
+/**
+*   @database: { 微信开发 }
+*   @desc:     { 记录用户信息 } 
+    const { meet_id, user, username, gender, org_name, region, qq, mobile, phone, education, rank, level, class_list, work_years, id_card, tax_org, tax_sn, tax_phone, tax_address, tax_bank, tax_bank_account, rec_time } = params;
+*/
+export const addMeetUsers = params =>
+  axios({
+    url: '/237/310d7f4653.json',
+    params,
+  });
+
+/**
+*   @database: { 微信开发 }
+*   @desc:     { 用户是否填写基础信息 } 
+    const { user, meet_id } = params;
+*/
+export const getMeetUsers = params =>
+  axios({
+    url: '/238/3937639e6f.json',
+    params,
+  });

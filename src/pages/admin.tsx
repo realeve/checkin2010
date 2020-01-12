@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, WhiteSpace, WingBlank, Toast } from 'antd-mobile';
-import styles from './checkin.less';
+import styles from './index.less';
 import { connect } from 'dva';
 import FormComponent from '@/components/FormComponent';
 import * as db from '@/utils/db';
