@@ -16,6 +16,7 @@ export const getUrl = async (cfg: {
   date: string;
   title: string;
   place: string;
+  nonce: string;
 }) => {
   let { origin, pathname } = window.location;
   return `${origin}${pathname}#checkin?id=${cfg.id}&t=${timestamp()}&v=${cfg.valid}`;
@@ -114,7 +115,7 @@ export default function NewPage() {
         </p>
 
         {/* 功能测试用 */}
-        {/* <a href={qrcode}>{qrcode}</a> */}
+        <a href={qrcode}>{qrcode}</a>
 
         <div className={styles.qr}>
           <QRCode size={400} value={qrcode} />

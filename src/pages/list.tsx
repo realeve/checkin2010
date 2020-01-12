@@ -126,10 +126,10 @@ function ListPage({ isAdmin }) {
             <div style={{ marginBottom: '8px', fontSize: '14px', marginTop: '10px' }}>
               会议链接:
               <a
-                href={`${window.location.origin}${window.location.pathname}#/?id=${obj.id}&nonce=${obj.nonce}`}
+                href={`${window.location.origin}${window.location.pathname}#qr/?id=${obj.id}&nonce=${obj.nonce}`}
                 target="_blank"
               >
-                {`${window.location.origin}${window.location.pathname}#/?id=${obj.id}&nonce=${obj.nonce}`}
+                {`${window.location.origin}${window.location.pathname}#qr/?id=${obj.id}&nonce=${obj.nonce}`}
               </a>
             </div>
           </div>
