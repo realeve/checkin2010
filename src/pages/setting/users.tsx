@@ -101,8 +101,8 @@ export default function UserList({ meeting_id: meet_id }) {
           }}
         >
           <div style={rowStyle}>
-            <div>单位: {obj['单位']}</div>
-            <div>手机: {obj['手机']}</div>
+            <div>工作单位: {obj['单位']}</div>
+            <div>手机号: {obj['手机']}</div>
           </div>
           <div style={rowStyle}>
             <div>学历: {obj['学历']}</div>
