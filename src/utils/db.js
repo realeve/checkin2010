@@ -164,3 +164,14 @@ export const getMeetUsers = params =>
     url: '/238/3937639e6f.json',
     params,
   });
+
+/**
+*   @database: { 微信开发 }
+*   @desc:     { 获取用户基础信息id } 
+    const { meet_id, user } = params;
+*/
+export const getMeetUsersId = params =>
+  axios({
+    url: '/239/4fff20ab6a.json',
+    params,
+  });

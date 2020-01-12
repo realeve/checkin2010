@@ -115,7 +115,7 @@ export default function NewPage() {
         </p>
 
         {/* 功能测试用 */}
-        <a href={qrcode}>{qrcode}</a>
+        {/* <a href={qrcode}>{qrcode}</a> */}
 
         <div className={styles.qr}>
           <QRCode size={400} value={qrcode} />
