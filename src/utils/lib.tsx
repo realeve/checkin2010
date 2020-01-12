@@ -36,7 +36,8 @@ export const parseAnswer = (
   let curAnswer = '';
   let res = state[key];
   if (res) {
-    if (typeof res !== 'string') {
+    if (!['string', 'number'].includes(typeof res)) {
+      // console.log(res, typeof res);
       curAnswer = res.map((id: string) => alphaRange[Number(id)]).join(',');
     } else {
       curAnswer = alphaRange[Number(res)];

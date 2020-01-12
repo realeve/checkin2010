@@ -11,7 +11,7 @@ import { useSetState } from 'react-use';
 import Result from '@/components/Result';
 import * as userLib from '@/utils/user';
 import RadioComponent from '@/components/RadioComponent';
-import * as R from 'ramda';
+// import * as R from 'ramda';
 
 // rec_time,user
 

@@ -8,6 +8,10 @@ import * as userLib from '@/utils/user';
 import * as lib from '@/utils/lib';
 import Excel from '@/utils/excel';
 import ValidPage from './valid';
+import * as R from 'ramda';
+import { filedsCfg } from '../index';
+
+let fieldsName = filedsCfg.map(item => item.title);
 
 const paper = [
   {
@@ -26,6 +30,12 @@ const paper = [
     key: 'start_time',
   },
   {
+    type: 'checkbox',
+    title: '必填字段',
+    key: 'fields',
+    data: fieldsName,
+  },
+  {
     type: 'input',
     title: '二维码刷新时长(秒)',
     key: 'refresh_length',
@@ -42,7 +52,7 @@ function SettingPage({ meeting_id, isAdmin }) {
     return <ValidPage />;
   }
 
-  const [state, setState] = useState(['', '', lib.now(), '10', '20']);
+  const [state, setState] = useState(['', '', lib.now(), [], '10', '20']);
 
   const [loading, setLoading] = useState(false);
   const [showErr, setShowErr] = useState({ msg: '' });
@@ -55,7 +65,9 @@ function SettingPage({ meeting_id, isAdmin }) {
     setLoading(true);
     // 数据是否完整
 
-    let status = state.findIndex(item => item.trim().length === 0);
+    let status = state.findIndex(
+      item => (typeof item === 'string' ? item.trim() : item).length === 0,
+    );
 
     if (status > -1) {
       Toast.fail(`第${status + 1}题未填写`);
@@ -70,9 +82,15 @@ function SettingPage({ meeting_id, isAdmin }) {
     state.forEach((item, idx) => {
       param[paper[idx].key] = item;
     });
-    // 🥜
 
-    console.log(param);
+    // 🥜 字段展示处理
+    param.fields = param.fields
+      .map(idx => {
+        let item = filedsCfg[idx];
+        return item.key;
+      })
+      .join(',');
+
     db.addMeetSetting(param)
       .then(() => {
         userLib.gotoSuccess();
@@ -98,8 +116,14 @@ function SettingPage({ meeting_id, isAdmin }) {
         return;
       }
       let data = res.data[0];
+      data[3] = data[3]
+        .trim()
+        .split(',')
+        .map(key => filedsCfg.findIndex(item => item.key === key) + '');
+      console.log(data);
       setState(data);
     });
+
     db.getMeetCheckin(meeting_id).then(res => {
       res.data = res.data.map(item => {
         item[1] = "'" + item[1];
@@ -136,7 +160,12 @@ function SettingPage({ meeting_id, isAdmin }) {
             type="primary"
             onClick={onSubmmit}
             loading={loading}
-            disabled={loading || state.findIndex(item => item.trim().length === 0) > -1}
+            disabled={
+              loading ||
+              state.findIndex(
+                item => (typeof item === 'string' ? item.trim() : item).length === 0,
+              ) > -1
+            }
           >
             提交
           </Button>
