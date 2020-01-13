@@ -343,7 +343,8 @@ function NewPage({ user }: any) {
             let val = userInfo[key] || '';
             if (key === 'education') {
               let idx = R.findIndex(item => item === val)(eduList);
-              val = idx ? String(idx) : '';
+              val = idx > -1 ? String(idx) : '';
+              // console.log(idx, val);
             } else if (key === 'gender') {
               val = val === '男' ? '0' : val === '女' ? '1' : '';
             }
