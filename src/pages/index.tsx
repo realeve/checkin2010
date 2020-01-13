@@ -11,7 +11,7 @@ import { useSetState } from 'react-use';
 import Result from '@/components/Result';
 import * as userLib from '@/utils/user';
 import RadioComponent from '@/components/RadioComponent';
-// import * as R from 'ramda';
+import * as R from 'ramda';
 
 // rec_time,user
 
@@ -113,6 +113,21 @@ const getParamDetail = (params, keys, extraInfo, Toast) => {
   return data;
 };
 
+const handleUser = userList => {
+  let res = {};
+  filedsCfg.forEach(item => {
+    res[item.key] = '';
+  });
+  userList.forEach(item => {
+    Object.keys(item).forEach(key => {
+      if (String(item[key]).trim().length > 0) {
+        res[key] = item[key];
+      }
+    });
+  });
+  return res;
+};
+
 function NewPage({ user }: any) {
   const [state, setState] = useState(['']);
 
@@ -130,6 +145,10 @@ function NewPage({ user }: any) {
 
   const [meetId, setMeetId] = useState(null);
   const [keys, setKeys] = useState([]);
+
+  const [userList, setUserList] = useState([]);
+
+  const [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
     // let res = getCfg();
@@ -160,7 +179,7 @@ function NewPage({ user }: any) {
     // }
 
     // 获取当天会议列表
-    db.getMeetBaseSetting().then(res => {
+    db.getMeetBaseSetting().then(async res => {
       if (res.rows === 0) {
         setResult({
           title: '签到失败',
@@ -170,6 +189,14 @@ function NewPage({ user }: any) {
         });
         return;
       }
+      let { data } = await db.getMeetUsersHistory(user.user);
+      setUserList(data);
+
+      // 用户基础信息载入
+      let userInfo = handleUser(data);
+      setUserInfo(userInfo);
+
+      // console.log(userInfo);
 
       setMetting(res.data);
     });
@@ -200,26 +227,51 @@ function NewPage({ user }: any) {
   }, []);
 
   // 判断重复填写并处理
-  useEffect(() => {
-    // 没有meetId
-    if (!meetId) {
-      return;
-    }
-    db.getMeetUsers({
-      user: user.user,
-      meet_id: meeting[meetId].id,
-    }).then(res => {
-      if (res.rows === 0) {
-        return;
-      }
-      setResult({
-        title: '请勿重复填写',
-        message: '当前会议信息已经填写，请勿重复填写',
-        status: 'error',
-        hide: false,
-      });
-    });
-  }, [meetId]);
+  // useEffect(() => {
+  //   // 没有meetId
+  //   if (!meetId) {
+  //     return;
+  //   }
+
+  //   if (userList.length > 0) {
+  //     let curMeet = R.find(item => item.meet_id == meeting[meetId].id)(userList);
+  //     // console.log(userList, meeting[meetId]);
+  //     if (curMeet) {
+  //       setResult({
+  //         title: '请勿重复填写',
+  //         message:
+  //           '当前会议信息已经填写，请勿重复填写' +
+  //           JSON.stringify({
+  //             user: user.user,
+  //             meet_id: meeting[meetId].id,
+  //           }),
+  //         status: 'error',
+  //         hide: false,
+  //       });
+  //       return;
+  //     }
+  //   }
+
+  //   // db.getMeetUsers({
+  //   //   user: user.user,
+  //   //   meet_id: meeting[meetId].id,
+  //   // }).then(res => {
+  //   //   if (res.rows === 0) {
+  //   //     return;
+  //   //   }
+  //   //   setResult({
+  //   //     title: '请勿重复填写',
+  //   //     message:
+  //   //       '当前会议信息已经填写，请勿重复填写' +
+  //   //       JSON.stringify({
+  //   //         user: user.user,
+  //   //         meet_id: meeting[meetId].id,
+  //   //       }),
+  //   //     status: 'error',
+  //   //     hide: false,
+  //   //   });
+  //   // });
+  // }, [meetId]);
 
   // 提交信息
   const onSubmmit = async (params = state, meet_id) => {
@@ -227,6 +279,10 @@ function NewPage({ user }: any) {
       // 不重复提交
       return;
     }
+
+    let _user = R.find(item => item.meet_id == meeting[meetId].id)(userList);
+
+    let methodName = _user ? 'setMeetUsers' : 'addMeetUsers';
 
     // 数据是否完整
 
@@ -246,15 +302,21 @@ function NewPage({ user }: any) {
       },
       Toast,
     );
-    console.log(paperInfo);
+    // console.log(paperInfo);
     if (!paperInfo) {
       return;
     }
     setLoading(true);
 
-    db.addMeetUsers(paperInfo)
+    db[methodName](paperInfo)
       .then(res => {
-        userLib.gotoSuccess(0);
+        // userLib.gotoSuccess(0);
+        setResult({
+          title: '基础信息提交成功',
+          message: '请扫描大屏二维码完成签到',
+          status: 'success',
+          hide: false,
+        });
         setLoading(false);
       })
       .catch(e => {
@@ -277,6 +339,19 @@ function NewPage({ user }: any) {
           let fields = meeting[meetId].fields;
           let keys = getKeys(fields);
           setKeys(keys);
+          let nextState = keys.map(({ key }) => {
+            let val = userInfo[key] || '';
+            if (key === 'education') {
+              let idx = R.findIndex(item => item === val)(eduList);
+              val = idx ? String(idx) : '';
+            } else if (key === 'gender') {
+              val = val === '男' ? '0' : val === '女' ? '1' : '';
+            }
+
+            // console.log(key, val, userInfo);
+            return val;
+          });
+          setState(nextState);
         }}
         title="请选择您今日要参加的会议"
         data={meeting.map(({ meeting_name }) => meeting_name)}
@@ -298,7 +373,7 @@ function NewPage({ user }: any) {
           loading={loading}
           disabled={loading || state[0].length === 0}
         >
-          提交
+          确认无误,提交
         </Button>
       </WingBlank>
     </div>

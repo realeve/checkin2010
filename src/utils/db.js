@@ -175,3 +175,26 @@ export const getMeetUsersId = params =>
     url: '/239/4fff20ab6a.json',
     params,
   });
+
+/**
+ *   @database: { 微信开发 }
+ *   @desc:     { 用户基础信息载入 }
+ */
+export const getMeetUsersHistory = user =>
+  axios({
+    url: '/240/694989eadc.json',
+    params: {
+      user,
+    },
+  });
+
+/**
+*   @database: { 微信开发 }
+*   @desc:     { 更新基础信息 } 
+    const { username, gender, org_name, region, qq, mobile, phone, education, rank, level, class_list, work_years, id_card, tax_org, tax_sn, tax_phone, tax_address, tax_bank, tax_bank_account, rec_time, user, meet_id } = params;
+*/
+export const setMeetUsers = params =>
+  axios({
+    url: '/241/efa2370eed.json',
+    params,
+  });

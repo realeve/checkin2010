@@ -81,7 +81,7 @@ function NewPage({ user }: any) {
 
     db.addMeetCheckin(param)
       .then(res => {
-        userLib.gotoSuccess();
+        userLib.gotoSuccess(0);
       })
       .catch(e => {
         Toast.fail('提交失败');

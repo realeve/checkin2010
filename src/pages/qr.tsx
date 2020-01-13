@@ -6,6 +6,7 @@ import QRCode from 'qrcode.react';
 import moment from 'moment';
 import * as db from '@/utils/db';
 import qs from 'qs';
+import QrImg from './qr.jpg';
 
 export const timestamp = () => moment().format('x');
 
@@ -109,16 +110,26 @@ export default function NewPage() {
     <div className={styles.content}>
       <WingBlank>
         <h2>{meetCfg.title} 现场签到</h2>
+        <div>
+          签到程序：
+          <br />
+          1、请搜索关注公众号“四川创新教育研究院”；
+          <br />
+          2、点击为您服务---我要签到
+        </div>
         <p>
-          日期:{meetCfg.date} <span style={{ margin: '0 20px' }}>地点:{meetCfg.place}</span> 已签到:
-          {num}
+          日期:{meetCfg.date} <span style={{ margin: '0 20px' }}>地点:{meetCfg.place}</span>
+          已签到:{num}
         </p>
 
         {/* 功能测试用 */}
         {/* <a href={qrcode}>{qrcode}</a> */}
 
-        <div className={styles.qr}>
-          <QRCode size={400} value={qrcode} />
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <img src={QrImg} style={{ width: 405, height: 405 }} />
+          <div className={styles.qr}>
+            <QRCode size={400} value={qrcode} fgColor="#e23" />
+          </div>
         </div>
         <p>(按 F11 全屏，按Esc退出全屏。二维码{meetCfg.refresh}秒自动刷新一次。)</p>
       </WingBlank>
