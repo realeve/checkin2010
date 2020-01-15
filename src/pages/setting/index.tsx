@@ -47,6 +47,10 @@ const paper = [
   },
 ];
 
+const tblHeader = '工作单位,身份证号码,姓名,手机号码,学历,进场时间,离场时间,学习分钟数,上下午,性别,所属行政区域,QQ号,座机号码,职称,职务,教学科目,工作年限,开票单位,纳税人识别号,开票电话,开户行,开票地址,开户帐号'.split(
+  ',',
+);
+
 function SettingPage({ meeting_id, isAdmin }) {
   if (!isAdmin) {
     return <ValidPage />;
@@ -142,10 +146,18 @@ function SettingPage({ meeting_id, isAdmin }) {
       Toast.fail('数据载入失败');
       return;
     }
+    let fieldsHeader = state[3].map(idx => filedsCfg[idx].title);
+    let appendHeader = '进场时间,离场时间,学习分钟数,上下午'.split(',');
+
+    let header = tblHeader.filter(item => [...fieldsHeader, ...appendHeader].includes(item));
+    let idxList = header.map(item => R.findIndex(R.equals(item))(tblHeader));
+
+    let body = downloadData.data.map(row => idxList.map(idx => row[idx]));
+
     let excel = new Excel({
       filename: state[2] + ' ' + state[0],
-      header: downloadData.header,
-      body: downloadData.data,
+      header,
+      body,
     });
     excel.save();
   };
